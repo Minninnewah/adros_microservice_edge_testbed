@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+    name: car
+    labels:
+        app: car
+spec:
+    replicas: 1
+    selector:
+        matchLabels:
+            app: car
+    template:
+        metadata:
+            labels:
+                app: car
+        spec:
+            containers:
+              - name: car
+                image: minninnewah/car:latest
+                imagePullPolicy: Always
+                args:
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: car
+spec:
+  selector:
+    app: car
+  ports:
+    - protocol: TCP
+      port: 5000
+      targetPort: 8080

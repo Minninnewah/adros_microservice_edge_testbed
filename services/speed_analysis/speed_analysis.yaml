@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+    name: speed-analysis
+    labels:
+        app: speed-analysis
+spec:
+    replicas: 1
+    selector:
+        matchLabels:
+            app: speed-analysis
+    template:
+        metadata:
+            labels:
+                app: speed-analysis
+        spec:
+            containers:
+              - name: speed-analysis
+                image: minninnewah/speed_analysis:latest
+                imagePullPolicy: Always
+                args:
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: speed-analysis
+spec:
+  selector:
+    app: speed-analysis
+  ports:
+    - protocol: TCP
+      port: 5000
+      targetPort: 8080

@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+    name: car-distribution
+    labels:
+        app: car-distribution
+spec:
+    replicas: 1
+    selector:
+        matchLabels:
+            app: car-distribution
+    template:
+        metadata:
+            labels:
+                app: car-distribution
+        spec:
+            containers:
+              - name: car-distribution
+                image: minninnewah/car_distribution:latest
+                imagePullPolicy: Always
+                args:
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: car-distribution
+spec:
+  selector:
+    app: car-distribution
+  ports:
+    - protocol: TCP
+      port: 5000
+      targetPort: 8080

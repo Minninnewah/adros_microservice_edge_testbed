@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+    name: edge-db-handler
+    labels:
+        app: edge-db-handler
+spec:
+    replicas: 1
+    selector:
+        matchLabels:
+            app: edge-db-handler
+    template:
+        metadata:
+            labels:
+                app: edge-db-handler
+        spec:
+            containers:
+              - name: edge-db-handler
+                image: minninnewah/edge_db_handler:latest
+                imagePullPolicy: Always
+                args:
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: edge-db-handler
+spec:
+  selector:
+    app: edge-db-handler 
+  ports:
+    - protocol: TCP
+      port: 5000
+      targetPort: 8080

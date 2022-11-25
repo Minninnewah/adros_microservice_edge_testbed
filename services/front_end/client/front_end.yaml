@@ -1,0 +1,34 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+    name: front-end
+    labels:
+        app: front-end
+spec:
+    replicas: 1
+    selector:
+        matchLabels:
+            app: front-end
+    template:
+        metadata:
+            labels:
+                app: front-end
+        spec:
+            containers:
+              - name: front-end
+                image: minninnewah/front_end:latest
+                imagePullPolicy: Always
+                args:
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: front-end
+spec:
+  type: LoadBalancer
+  selector:
+    app: front-end
+  ports:
+    - protocol: TCP
+      port: 5000
+      targetPort: 3000

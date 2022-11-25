@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+    name: cloud-db-handler
+    labels:
+        app: cloud-db-handler
+spec:
+    replicas: 1
+    selector:
+        matchLabels:
+            app: cloud-db-handler
+    template:
+        metadata:
+            labels:
+                app: cloud-db-handler
+        spec:
+            containers:
+              - name: cloud-db-handler
+                image: minninnewah/cloud_db_handler:latest
+                imagePullPolicy: Always
+                args:
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: cloud-db-handler
+spec:
+  selector:
+    app: cloud-db-handler 
+  ports:
+    - protocol: TCP
+      port: 5000
+      targetPort: 8080

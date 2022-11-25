@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+    name: speed-controller
+    labels:
+        app: speed-controller
+spec:
+    replicas: 1
+    selector:
+        matchLabels:
+            app: speed-controller
+    template:
+        metadata:
+            labels:
+                app: speed-controller
+        spec:
+            containers:
+              - name: speed-controller
+                image: minninnewah/speed_controller:latest
+                imagePullPolicy: Always
+                args:
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: speed-controller
+spec:
+  selector:
+    app: speed-controller
+  ports:
+    - protocol: TCP
+      port: 5000
+      targetPort: 8080
