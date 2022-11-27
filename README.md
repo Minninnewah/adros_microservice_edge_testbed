@@ -17,23 +17,23 @@ In this environment the communication between the cloud and the edge clusters ar
 ## Quick deployment
 Cloud services
 ```
-wget -O - https://github.com/Minninnewah/aucas_microservice_edge_testbed/edit/main/cloud_node_deployment.sh | bash
+wget -O - https://raw.githubusercontent.com/Minninnewah/aucas_microservice_edge_testbed/main/cloud_node_deployment.sh | bash
 
 ```
 
 Edge services
 ```
-wget -O - https://github.com/Minninnewah/aucas_microservice_edge_testbed/edit/main/edge_node_deployment.sh | bash
+wget -O - https://raw.githubusercontent.com/Minninnewah/aucas_microservice_edge_testbed/edit/main/edge_node_deployment.sh | bash
 ```
 ### Remove container and file
 Cloud services
 ```
-wget -O - https://github.com/Minninnewah/aucas_microservice_edge_testbed/edit/main/cloud_node_clean_deployment.sh | bash
+wget -O - https://raw.githubusercontent.com/Minninnewah/aucas_microservice_edge_testbed/edit/main/cloud_node_clean_deployment.sh | bash
 
 ```
 
 Edge services
 ```
-wget -O - https://github.com/Minninnewah/aucas_microservice_edge_testbed/edit/main/edge_node_clean_deployment.sh | bash
+wget -O - https://raw.githubusercontent.com/Minninnewah/aucas_microservice_edge_testbed/edit/main/edge_node_clean_deployment.sh | bash
 
 ```
