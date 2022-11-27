@@ -1,7 +1,7 @@
-kubectl delete edge_db.yaml 
-kubectl delete edge_db_handler.yaml
-kubectl delete speed_controller.yaml
-kubectl delete cars_management.yaml
+kubectl delete -f edge_db.yaml 
+kubectl delete -f edge_db_handler.yaml
+kubectl delete -f speed_controller.yaml
+kubectl delete -f cars_management.yaml
 
 rm edge_db.yaml 
 rm edge_db_handler.yaml
