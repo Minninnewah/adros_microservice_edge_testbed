@@ -13,3 +13,27 @@ To run this application we need at least two clusters, the cloud cluster and one
 
 ## Communication between clusters
 In this environment the communication between the cloud and the edge clusters are done using the TopoFuzzer tool. This is not necessary for each scenario but support the migration of services between different edge clusters sinc we can easily redirect traffic while keeping the connection.
+
+## Quick deployment
+Cloud services
+```
+wget -O - https://github.com/Minninnewah/aucas_microservice_edge_testbed/edit/main/cloud_node_deployment.sh | bash
+
+```
+
+Edge services
+```
+wget -O - https://github.com/Minninnewah/aucas_microservice_edge_testbed/edit/main/edge_node_deployment.sh | bash
+```
+### Remove container and file
+Cloud services
+```
+wget -O - https://github.com/Minninnewah/aucas_microservice_edge_testbed/edit/main/cloud_node_clean_deployment.sh | bash
+
+```
+
+Edge services
+```
+wget -O - https://github.com/Minninnewah/aucas_microservice_edge_testbed/edit/main/edge_node_clean_deployment.sh | bash
+
+```
