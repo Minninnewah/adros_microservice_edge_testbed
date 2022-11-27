@@ -25,10 +25,11 @@ kind: Service
 metadata:
   name: front-end
 spec:
-  type: LoadBalancer
+  type: NodePort
   selector:
     app: front-end
   ports:
     - protocol: TCP
       port: 5000
       targetPort: 3000
+      nodePort: 27000
