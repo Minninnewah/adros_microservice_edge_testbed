@@ -1,5 +1,5 @@
 {
-  "name": "speed_analysis",
+  "name": "server",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -9,9 +9,9 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "concurrently": "^7.6.0",
     "cors": "^2.8.5",
     "express": "^4.18.2",
     "got": "^12.5.2"
-  },
-  "type": "module"
+  }
 }

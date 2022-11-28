@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+    name: react-backend
+    labels:
+        app: react-backend
+spec:
+    replicas: 1
+    selector:
+        matchLabels:
+            app: react-backend
+    template:
+        metadata:
+            labels:
+                app: react-backend
+        spec:
+            containers:
+              - name: react_backend
+                image: minninnewah/react_backend:latest
+                imagePullPolicy: Always
+                args:
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: react-backend
+spec:
+  type: NodePort
+  selector:
+    app: react-backend
+  ports:
+    - protocol: TCP
+      port: 5000
+      targetPort: 8080
+      nodePort: 30002

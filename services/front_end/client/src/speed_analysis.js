@@ -8,7 +8,7 @@ function SpeedAnalysis() {
     const [items, setItems] = useState([]);
 
     useEffect(() => {
-        fetch("http://speed-analysis:5000")
+        fetch("http://160.85.253.79:30002/speed-analysis")
           .then(res => res.json())
           .then(
             (result) => {
