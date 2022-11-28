@@ -15,7 +15,7 @@ spec:
                 app: react-backend
         spec:
             containers:
-              - name: react_backend
+              - name: react-backend
                 image: minninnewah/react_backend:latest
                 imagePullPolicy: Always
                 args:
