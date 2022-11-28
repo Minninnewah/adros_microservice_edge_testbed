@@ -43,22 +43,11 @@ function SpeedAnalysis() {
         return 102+153-scale(speed, 0, 130, 102, 153);
     }
 
-    //let array = new Array(ARRAY_LENGTH).fill(120);
-    //array[3] = 100;
-    //array[4] = 80;
-    //array[5] = 80;
-    //array[6] = 80;
-    //array[7] = 10;
-    //array[8] = 30;
-
-    
-
-    
 
     const createGradientStyle = function () {
         let colorString = "";
-        items.reverse().forEach((el, index) => {
-            if(index != 0){
+        [...items].reverse().forEach((el, index) => {
+            if(index !== 0){
                 colorString += ","
             }
             colorString += "rgb(" + scaleSpeedToColorR(el) + "," + scaleSpeedToColorG(el) + "," + scaleSpeedToColorB(el) + ")"

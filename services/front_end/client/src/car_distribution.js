@@ -33,7 +33,7 @@ function CarDistribution() {
 
     return(
         <div className="ContainerDiv">
-            <h3 className='subtitle'>Disfunction analysis</h3>
+            <h3 className='subtitle'>Car distribution</h3>
             <div className="graph">
                 {positions.map(el => {
                     return (<div className="Dot" style={{left: "calc(" + el/3000.0*100 + "% - 5px)"}}></div>)
