@@ -8,7 +8,7 @@ const app = express()
 // Constants
 const PORT = 8080;
 const HOST = '0.0.0.0';
-const db_handler_url = 'http://db-handler:5000/cars';
+const db_handler_url = 'http://cloud-db-handler:5000/cars';
 
 
 app.get('/', async (req, res) => {

@@ -8,7 +8,7 @@ function CarDistribution() {
     const [positions, setItems] = useState([]);
 
     useEffect(() => {
-        fetch("http://160.85.253.79:30002/speed-analysis")
+        fetch("http://160.85.253.79:30002/car-distribution")
           .then(res => res.json())
           .then(
             (result) => {
