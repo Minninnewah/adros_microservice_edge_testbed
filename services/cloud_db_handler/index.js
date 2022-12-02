@@ -4,8 +4,11 @@ const express = require('express')
 const { Client } = require('pg')
 const { Pool } = require('pg')
 const app = express()
-const client = new Client()
 
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
+const client = new Client()
 const pool = new Pool({
     user: 'admin',
     host: 'cloud-db',
@@ -63,9 +66,15 @@ async function init_db() {
   await pool.query(insertSampleData, [now, now]);
 }
 
-function add_car(timestamp, number, speed, distance, position) {
-  pool.query(insertCarQuery, [timestamp, number, speed, distance, position]);
+function add_car_data(req, res) {
+  console.log("Nice")
+  //console.log(req)
+  console.log(req.body)
+  console.log(req.body.number)
+  pool.query(insertCarQuery, [req.body.timestamp, req.body.number, req.body.speed, req.body.distance, req.body.position]);
+  res.status(200).send();
 }
+
 
 async function get_Data_to_time(req, res) {
   const timestamp = now;
@@ -92,12 +101,13 @@ app.get('/', (req, res) => {
         throw err
       }
       console.log('car:', res2.rows[0])
-      res.send(res2.rows[0])
+      res.status(200).json(res2.rows)
     })
     
 });
 
 app.get('/cars', get_Data_to_time);
+app.post('/', add_car_data)
   
 app.listen(PORT, HOST, () => {
     console.log(`Running on http://${HOST}:${PORT}`);

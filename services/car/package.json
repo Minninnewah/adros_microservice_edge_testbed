@@ -1,5 +1,5 @@
 {
-  "name": "speed_controller",
+  "name": "car",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -10,7 +10,8 @@
   "license": "ISC",
   "dependencies": {
     "express": "^4.18.2",
-    "got": "^12.5.2"
+    "got": "^12.5.2",
+    "jsonwebtoken": "^8.5.1"
   },
   "type": "module"
 }

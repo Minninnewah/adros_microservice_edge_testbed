@@ -1,8 +1,12 @@
 'use strict';
 
-const express = require('express')
-const { Client } = require('pg')
-const { Pool } = require('pg')
+import express from 'express';
+import pg from 'pg';
+import got from 'got';
+const Client = pg.Client
+const { Pool } = pg
+
+
 const app = express()
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -73,6 +77,23 @@ async function init_db() {
   await pool.query(insertSampleData, [now, now]);
 }
 
+function uploadDataToCloudCluster (timestamp, number, speed, distance, position) {
+  //ToDo upload & replace cluster intern dns name
+  console.log("Received")
+  console.log(number)
+
+  got.post('http://cloud-db-handler:5000', {
+    json: {
+      timestamp: timestamp,
+      speed: speed,
+      distance: distance,
+      position: position,
+      number: number
+    }
+  })
+
+}
+
 function get_car (req, res) {
   //res.send('Hello World');
   const SQL_SELECT_COMMAND = 'SELECT * FROM cars WHERE number = $1';
@@ -102,16 +123,21 @@ function get_car_before (req, res) {
 
 function update_car (req, res) {
   const SQL_UPDATE_COMMAND = "UPDATE cars SET timestamp = $1, speed=$2, distance=$3, position=$4 WHERE number=$5;"
-  
-  pool.query(SQL_UPDATE_COMMAND, [new Date(), req.body.speed, req.body.distance, req.body.position, req.body.number], (err, res2) => {
+
+  let currentTimestamp = new Date();
+
+  //Update does nothing if not already exist and insert has "where not exist" part so it only insert the data if not already exist => it's an XOR
+  pool.query(SQL_UPDATE_COMMAND, [currentTimestamp, req.body.speed, req.body.distance, req.body.position, req.body.number], (err, res2) => {
     if (err) {
       throw err
     }
-    pool.query(insertCarQuery, [new Date(), req.body.number, req.body.speed, req.body.distance, req.body.position, req.body.number], (err, res2) => {
+    pool.query(insertCarQuery, [currentTimestamp, req.body.number, req.body.speed, req.body.distance, req.body.position, req.body.number], (err, res2) => {
       if (err) {
         throw err
       }
-  
+
+      //If no error occurs we should reach this point no matter if update or insert is used
+      uploadDataToCloudCluster(currentTimestamp, req.body.number, req.body.speed, req.body.distance, req.body.position)
       res.status(200).send();
     })
   })
