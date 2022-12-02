@@ -37,3 +37,10 @@ Edge services
 wget -O - https://raw.githubusercontent.com/Minninnewah/aucas_microservice_edge_testbed/main/edge_node_clean_deployment.sh | bash
 
 ```
+
+## Services
+### Edge cluster
+
+### Cloud cluster
+
+### 
