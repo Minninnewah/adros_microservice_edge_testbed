@@ -40,7 +40,19 @@ wget -O - https://raw.githubusercontent.com/Minninnewah/aucas_microservice_edge_
 
 ## Services
 ### Edge cluster
+#### cars_management (identity handler)
+##### Description
+The role of this service is the creation and verifycation of json web tokens. This tokens are used to send the data between the edge node and the drone. This approach should increase the security since we can check that the request is comming from the drone. But in this test environment a simple key is used which addtionally is transmited at the register request and therefore this should be changed if someone really want to use this as a security feature. For our use this service just provide a statefull service (based on stateful code) which is important to provide all types of services.
+##### API
+- POST /register/:DroneId //and the key parameter in the body
+- DELETE /deregister/:DroneId
+- POST /decodeJWT/:DroneId //And JWT in jwt body parameter
+- POST /createJWT/:DroneId //And speed as body parameter
+
+
+
+#### 
 
 ### Cloud cluster
 
-### 
+### Simulation service
