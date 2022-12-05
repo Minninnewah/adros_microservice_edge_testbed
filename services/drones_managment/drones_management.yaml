@@ -1,35 +1,33 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-    name: react-backend
+    name: drones-management
     labels:
-        app: react-backend
+        app: drones-management
 spec:
     replicas: 1
     selector:
         matchLabels:
-            app: react-backend
+            app: drones-management
     template:
         metadata:
             labels:
-                app: react-backend
+                app: drones-management
         spec:
             containers:
-              - name: react-backend
-                image: minninnewah/react_backend:latest
+              - name: drones-management
+                image: minninnewah/drones_management:latest
                 imagePullPolicy: Always
                 args:
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: react-backend
+  name: drones-management
 spec:
-  type: NodePort
   selector:
-    app: react-backend
+    app: drones-management
   ports:
     - protocol: TCP
       port: 5000
       targetPort: 8080
-      nodePort: 30002

@@ -24,7 +24,7 @@ const HOST = '0.0.0.0';
 const now = new Date();
 
 const createTable = `
-    CREATE TABLE IF NOT EXISTS "cars" (
+    CREATE TABLE IF NOT EXISTS "drones" (
 	    "id" SERIAL,
 	    "timestamp" TIMESTAMP NOT NULL,
       "number" VARCHAR(10) NOT NULL,
@@ -35,7 +35,7 @@ const createTable = `
     );`;
 
 const insertSampleData = `
-    INSERT INTO cars (timestamp, number, speed, distance, position)
+    INSERT INTO drones (timestamp, number, speed, distance, position)
     VALUES (
         $1,
         54004566,
@@ -51,7 +51,7 @@ const insertSampleData = `
         500
       );`;
 
-const insertCarQuery = `INSERT INTO cars (timestamp, number, speed, distance, position) 
+const insertDroneQuery = `INSERT INTO drones (timestamp, number, speed, distance, position) 
   VALUES (
     $1,
     $2, 
@@ -61,17 +61,17 @@ const insertCarQuery = `INSERT INTO cars (timestamp, number, speed, distance, po
   );`
 
 async function init_db() {
-  await pool.query(`DROP TABLE IF EXISTS cars;`)
+  await pool.query(`DROP TABLE IF EXISTS drones;`)
   await pool.query(createTable);
   await pool.query(insertSampleData, [now, now]);
 }
 
-function add_car_data(req, res) {
+function add_drone_data(req, res) {
   console.log("Nice")
   //console.log(req)
   console.log(req.body)
   console.log(req.body.number)
-  pool.query(insertCarQuery, [req.body.timestamp, req.body.number, req.body.speed, req.body.distance, req.body.position]);
+  pool.query(insertDroneQuery, [req.body.timestamp, req.body.number, req.body.speed, req.body.distance, req.body.position]);
   res.status(200).send();
 }
 
@@ -79,7 +79,7 @@ function add_car_data(req, res) {
 async function get_Data_to_time(req, res) {
   const timestamp = now;
   const sqlCommand = `SELECT *
-    FROM    cars 
+    FROM    drones 
     WHERE   timestamp BETWEEN $1::timestamp - (INTERVAL '15 second') AND $2::timestamp;`
 
   pool.query(sqlCommand, [timestamp, timestamp], (error, results) => {
@@ -96,18 +96,17 @@ init_db();
 
 app.get('/', (req, res) => {
     //res.send('Hello World');
-    pool.query('SELECT * FROM cars', (err, res2) => {
+    pool.query('SELECT * FROM drones', (err, res2) => {
       if (err) {
         throw err
       }
-      console.log('car:', res2.rows[0])
       res.status(200).json(res2.rows)
     })
     
 });
 
-app.get('/cars', get_Data_to_time);
-app.post('/', add_car_data)
+app.get('/drones', get_Data_to_time);
+app.post('/', add_drone_data)
   
 app.listen(PORT, HOST, () => {
     console.log(`Running on http://${HOST}:${PORT}`);

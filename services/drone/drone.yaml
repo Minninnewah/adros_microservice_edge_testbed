@@ -1,32 +1,32 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-    name: car
+    name: drone
     labels:
-        app: car
+        app: drone
 spec:
     replicas: 1
     selector:
         matchLabels:
-            app: car
+            app: drone
     template:
         metadata:
             labels:
-                app: car
+                app: drone
         spec:
             containers:
-              - name: car
-                image: minninnewah/car:latest
+              - name: drone
+                image: minninnewah/drone:latest
                 imagePullPolicy: Always
                 args:
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: car
+  name: drone
 spec:
   selector:
-    app: car
+    app: drone
   ports:
     - protocol: TCP
       port: 5000

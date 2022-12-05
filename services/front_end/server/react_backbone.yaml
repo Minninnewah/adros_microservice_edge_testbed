@@ -1,33 +1,35 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-    name: cars-management
+    name: react-backbone
     labels:
-        app: cars-management
+        app: react-backbone
 spec:
     replicas: 1
     selector:
         matchLabels:
-            app: cars-management
+            app: react-backbone
     template:
         metadata:
             labels:
-                app: cars-management
+                app: react-backbone
         spec:
             containers:
-              - name: cars-management
-                image: minninnewah/cars_management:latest
+              - name: react-backbone
+                image: minninnewah/react_backbone:latest
                 imagePullPolicy: Always
                 args:
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: cars-management
+  name: react-backbone
 spec:
+  type: NodePort
   selector:
-    app: cars-management
+    app: react-backbone
   ports:
     - protocol: TCP
       port: 5000
       targetPort: 8080
+      nodePort: 30002

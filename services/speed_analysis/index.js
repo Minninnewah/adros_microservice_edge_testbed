@@ -11,34 +11,29 @@ app.use(cors())
 // Constants
 const PORT = 8080;
 const HOST = '0.0.0.0';
-const db_handler_url = 'http://cloud-db-handler:5000/cars';
+const db_handler_url = 'http://cloud-db-handler:5000/drones';
 
 const nrSplits = 100;
-const roadLength = 3000;
-const defaultRoadSpeed = 120;
+const routeLength = 3000;
+const defaultRouteSpeed = 120;
 
 
 app.get('/', async (req, res) => {
   console.log("test");
   const data = await got(db_handler_url).json();
 
-  let roadPieces = new Array(nrSplits).fill(defaultRoadSpeed);
+  let roadPieces = new Array(nrSplits).fill(defaultRouteSpeed);
 
   data.forEach(el => {
 
-    let arrayPos = Math.floor(el.position/(roadLength/nrSplits));
+    let arrayPos = Math.floor(el.position/(routeLength/nrSplits));
     console.log(arrayPos);
-    if(roadPieces[arrayPos] == defaultRoadSpeed){
+    if(roadPieces[arrayPos] == defaultRouteSpeed){
       roadPieces[arrayPos] = el.speed;
     }
     
   });
-  //console.log(data)
-  //console.log(typeof data);
-  //console.log(data[0]);
-  //console.log("test2");
-  //console.log(data)
-  //Create speed analysis
+
   res.status(200).json(roadPieces);
 });
 

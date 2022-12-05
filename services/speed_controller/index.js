@@ -6,10 +6,9 @@ const app = express()
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-let active_cars = {};
-const CAR_PORT = 3000;
+
 const edge_db_handler = "http://edge-db-handler:5000/"
-const cars_management = "http://cars-management:5000/"
+const drones_management = "http://drones-management:5000/"
 const speedIncrease = 1;
 const speedSlowDecrease = 1;
 const speedFastDecrease = 2;
@@ -36,48 +35,38 @@ app.post('/', async (req, res) => {
   const jwt = req.body.jwt;
   console.log(jwt);
 
-  const data = await got.post(cars_management + 'decodeJWT/' + number, {
+  const data = await got.post(drones_management + 'decodeJWT/' + number, {
     json: {
       jwt: jwt
     }
   }).json();
   console.log(data)  
   
-  //const data = {
-  //  speed: req.body.speed,
-  //  distance: req.body.distance,
-  //  position: req.body.position,
-  //  number: req.body.number
-  //}
-
-  //ToDo
-  //const data = await got(ip + ":" + CAR_PORT).json();
-  //const data = {speed : 20, position: 400, distance: 100, number: 666};
 
   let speed = data.speed;
-  console.log(edge_db_handler + "nextCar/" + data.position)
+  console.log(edge_db_handler + "nextDrone/" + data.position)
   
-  const carBefore = await got(edge_db_handler + "nextCar/" + data.position).json();
-  console.log(carBefore)
+  const droneBefore = await got(edge_db_handler + "nextDrone/" + data.position).json();
+  console.log(droneBefore)
 
-  if(carBefore.length == 0) {
+  if(droneBefore.length == 0) {
     speed = increaseSpeed(speed);
   }
-  else if(data.position < carBefore.position + 100)
+  else if(data.position < droneBefore.position + 100)
     if(data.distance > 60){
-      //Slow changes toward the speed of the car before
-      if (speed < carBefore.speed) {
+      //Slow changes toward the speed of the drone before
+      if (speed < droneBefore.speed) {
         speed = increaseSpeed(speed);
       } 
-      else if (speed > carBefore.speed) {
+      else if (speed > droneBefore.speed) {
         speed = decreaseSpeedSlow(speed);
       }
     }
-    else if (data.distance > 40 && carBefore.speed-speed < 5 ) {
+    else if (data.distance > 40 && droneBefore.speed-speed < 5 ) {
       speed = decreaseSpeedSlow(speed);
     }
     else{
-      if (carBefore.speed > speed) {
+      if (droneBefore.speed > speed) {
         speed = decreaseSpeedSlow(speed);
       }
       else {
@@ -102,7 +91,7 @@ app.post('/', async (req, res) => {
   console.log(speed)
   //let speed2 = speed;
 
-  const responseJwt = await got.post(cars_management + 'createJWT/' + number, {
+  const responseJwt = await got.post(drones_management + 'createJWT/' + number, {
     json: {
       speed: speed
     }

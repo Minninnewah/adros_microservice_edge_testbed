@@ -13,7 +13,7 @@ const DEFAULT_SPEED = 120;
 const PORT = 8080;
 const HOST = '0.0.0.0';
 
-const carsManagementService = "http://cars-management:5000/"
+const dronesManagementService = "http://drones-management:5000/"
 const speedControllerService = "http://speed-controller:5000/"
 
 
@@ -42,7 +42,7 @@ app.listen(PORT, HOST, () => {
  
 const register = async () => {
   console.log("Try to register")
-  await got.post(carsManagementService + "register/" + number, {
+  await got.post(dronesManagementService + "register/" + number, {
     json: {
       key: key
     }
@@ -52,7 +52,7 @@ const register = async () => {
 }
 
 const deregister = () => {
-  got.delete(carsManagementService + "deregister/" + number);
+  got.delete(dronesManagementService + "deregister/" + number);
 }
 
 const getSpeed = async () => {
@@ -104,12 +104,12 @@ const controlLoop = async () => {
     }
   }
   else {
-    //ToDo create new car nr etc and start from the beginning
+    //ToDo create new drone nr etc and start from the beginning
     register();
   }
 }
 
 await register();
-setInterval(controlLoop, 1000) //every 100ms 1 car -> Not for production
+setInterval(controlLoop, 1000) //every 100ms 1 drone -> Not for production
 
 

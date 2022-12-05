@@ -11,13 +11,13 @@ wget -O - https://raw.githubusercontent.com/Minninnewah/aucas_microservice_edge_
 kubectl apply -f front_end.yaml
 
 # react_backend
-wget -O - https://raw.githubusercontent.com/Minninnewah/aucas_microservice_edge_testbed/main/services/front_end/server/server.yaml > react_backend.yaml
+wget -O - https://raw.githubusercontent.com/Minninnewah/aucas_microservice_edge_testbed/main/services/front_end/server/react_backbone.yaml > react_backend.yaml
 kubectl apply -f react_backend.yaml
 
 # speed_analysis
 wget -O - https://raw.githubusercontent.com/Minninnewah/aucas_microservice_edge_testbed/main/services/speed_analysis/speed_analysis.yaml > speed_analysis.yaml
 kubectl apply -f speed_analysis.yaml
 
-# car_distribution
-wget -O - https://raw.githubusercontent.com/Minninnewah/aucas_microservice_edge_testbed/main/services/car_distribution/car_distribution.yaml > car_distribution.yaml
-kubectl apply -f car_distribution.yaml
+# drone_distribution
+wget -O - https://raw.githubusercontent.com/Minninnewah/aucas_microservice_edge_testbed/main/services/drone_distribution/drone_distribution.yaml > drone_distribution.yaml
+kubectl apply -f drone_distribution.yaml

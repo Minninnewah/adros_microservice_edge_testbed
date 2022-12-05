@@ -1,14 +1,14 @@
-import './car_distribution.css'
+import './drone_distribution.css'
 import { useEffect, useState } from 'react';
 
-function CarDistribution() {
+function DroneDistribution() {
 
     const [error, setError] = useState(null);
     const [isLoaded, setIsLoaded] = useState(false);
     const [positions, setItems] = useState([]);
 
     useEffect(() => {
-        fetch("http://160.85.253.79:30002/car-distribution")
+        fetch("http://160.85.253.79:30002/drone-distribution")
           .then(res => res.json())
           .then(
             (result) => {
@@ -33,7 +33,7 @@ function CarDistribution() {
 
     return(
         <div className="ContainerDiv">
-            <h3 className='subtitle'>Car distribution</h3>
+            <h3 className='subtitle'>Drone distribution</h3>
             <div className="graph">
                 {positions.map(el => {
                     return (<div className="Dot" style={{left: "calc(" + el/3000.0*100 + "% - 5px)"}}></div>)
@@ -45,4 +45,4 @@ function CarDistribution() {
     )
 }
 
-export default CarDistribution;
+export default DroneDistribution;

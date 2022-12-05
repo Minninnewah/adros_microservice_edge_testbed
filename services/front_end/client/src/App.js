@@ -1,7 +1,7 @@
 import logo from './logo.svg';
 import './App.css';
 import SpeedAnalysis from './speed_analysis';
-import CarDistribution from './car_distribution';
+import DroneDistribution from './drone_distribution';
 
 function App() {
   return (
@@ -10,7 +10,7 @@ function App() {
         <h2>Front-end</h2>
       </header>
       <SpeedAnalysis/>
-      <CarDistribution/>
+      <DroneDistribution/>
     </div>
   );
 }

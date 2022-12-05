@@ -28,7 +28,7 @@ const HOST = '0.0.0.0';
 const now = new Date();
 
 const createTable = `
-    CREATE TABLE IF NOT EXISTS "cars" (
+    CREATE TABLE IF NOT EXISTS "drones" (
 	    "id" SERIAL,
 	    "timestamp" TIMESTAMP NOT NULL,
       "number" VARCHAR(10) NOT NULL,
@@ -39,7 +39,7 @@ const createTable = `
     );`;
 
 const insertSampleData = `
-    INSERT INTO cars (timestamp, number, speed, distance, position)
+    INSERT INTO drones (timestamp, number, speed, distance, position)
     VALUES (
         $1,
         54004566,
@@ -62,17 +62,17 @@ const insertSampleData = `
         500
       );`;
 
-const insertCarQuery = `INSERT INTO cars (timestamp, number, speed, distance, position) 
+const insertDroneQuery = `INSERT INTO drones (timestamp, number, speed, distance, position) 
   SELECT 
     $1,
     $2, 
     $3,
     $4,
     $5
-  WHERE NOT EXISTS (SELECT number FROM cars WHERE number=$6);`
+  WHERE NOT EXISTS (SELECT number FROM drones WHERE number=$6);`
 
 async function init_db() {
-  await pool.query(`DROP TABLE IF EXISTS cars;`)
+  await pool.query(`DROP TABLE IF EXISTS drones;`)
   await pool.query(createTable);
   await pool.query(insertSampleData, [now, now]);
 }
@@ -94,9 +94,9 @@ function uploadDataToCloudCluster (timestamp, number, speed, distance, position)
 
 }
 
-function get_car (req, res) {
+function get_drone (req, res) {
   //res.send('Hello World');
-  const SQL_SELECT_COMMAND = 'SELECT * FROM cars WHERE number = $1';
+  const SQL_SELECT_COMMAND = 'SELECT * FROM drones WHERE number = $1';
   pool.query(SQL_SELECT_COMMAND, [req.params.number], (err, res2) => {
     if (err) {
       throw err
@@ -108,9 +108,9 @@ function get_car (req, res) {
   })
 }
 
-function get_car_before (req, res) {
-  const SQL_SELECT_CAR_BEFORE_COMMAND = 'SELECT * FROM cars WHERE position > $1 ORDER BY position LIMIT 1';
-  pool.query(SQL_SELECT_CAR_BEFORE_COMMAND, [req.params.position], (err, res2) => {
+function get_drone_before (req, res) {
+  const SQL_SELECT_DRONE_BEFORE_COMMAND = 'SELECT * FROM drones WHERE position > $1 ORDER BY position LIMIT 1';
+  pool.query(SQL_SELECT_DRONE_BEFORE_COMMAND, [req.params.position], (err, res2) => {
     if (err) {
       throw err
     }
@@ -121,8 +121,8 @@ function get_car_before (req, res) {
   })
 }
 
-function update_car (req, res) {
-  const SQL_UPDATE_COMMAND = "UPDATE cars SET timestamp = $1, speed=$2, distance=$3, position=$4 WHERE number=$5;"
+function update_drone (req, res) {
+  const SQL_UPDATE_COMMAND = "UPDATE drones SET timestamp = $1, speed=$2, distance=$3, position=$4 WHERE number=$5;"
 
   let currentTimestamp = new Date();
 
@@ -131,7 +131,7 @@ function update_car (req, res) {
     if (err) {
       throw err
     }
-    pool.query(insertCarQuery, [currentTimestamp, req.body.number, req.body.speed, req.body.distance, req.body.position, req.body.number], (err, res2) => {
+    pool.query(insertDroneQuery, [currentTimestamp, req.body.number, req.body.speed, req.body.distance, req.body.position, req.body.number], (err, res2) => {
       if (err) {
         throw err
       }
@@ -143,8 +143,8 @@ function update_car (req, res) {
   })
 }
 
-function delete_car (req, res) {
-    const SQL_DELETE_COMMAND = "DELETE FROM cars WHERE number=$1;"
+function delete_drone (req, res) {
+    const SQL_DELETE_COMMAND = "DELETE FROM drones WHERE number=$1;"
     pool.query(SQL_DELETE_COMMAND, [req.params.number], (err, res2) => {
       if (err) {
         throw err
@@ -155,10 +155,10 @@ function delete_car (req, res) {
 
 init_db();
 
-app.get('/:number',get_car);
-app.put('/', update_car);
-app.delete('/:number', delete_car)
-app.get('/nextCar/:position',get_car_before);
+app.get('/:number',get_drone);
+app.put('/', update_drone);
+app.delete('/:number', delete_drone)
+app.get('/nextDrone/:position',get_drone_before);
   
 app.listen(PORT, HOST, () => {
     console.log(`Running on http://${HOST}:${PORT}`);

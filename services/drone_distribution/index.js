@@ -8,33 +8,33 @@ const app = express()
 // Constants
 const PORT = 8080;
 const HOST = '0.0.0.0';
-const db_handler_url = 'http://cloud-db-handler:5000/cars';
+const db_handler_url = 'http://cloud-db-handler:5000/drones';
 
 
 app.get('/', async (req, res) => {
   const data = await got(db_handler_url).json();
 
-  let cars = {};
+  let drones = {};
 
   data.forEach(el => {
     console.log(el.timestamp)
     console.log(typeof el.timestamp)
 
-    if(cars[el.number] == undefined) {
-      cars[el.number] = [el.position, el.timestamp]
+    if(drones[el.number] == undefined) {
+      drones[el.number] = [el.position, el.timestamp]
     }
     else{
-      if(el.timestamp > cars[el.number][1]){
-        cars[el.number] = [el.position, el.timestamp]
+      if(el.timestamp > drones[el.number][1]){
+        drones[el.number] = [el.position, el.timestamp]
       }
     }
 
     
   });
 
-  let positions = new Array(Object.keys(cars).length);
+  let positions = new Array(Object.keys(drones).length);
 
-  Object.values(cars).forEach((el, index) => {
+  Object.values(drones).forEach((el, index) => {
     positions[index] = el[0];
   })
 

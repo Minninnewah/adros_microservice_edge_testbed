@@ -1,32 +1,32 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-    name: car-distribution
+    name: drone-distribution
     labels:
-        app: car-distribution
+        app: drone-distribution
 spec:
     replicas: 1
     selector:
         matchLabels:
-            app: car-distribution
+            app: drone-distribution
     template:
         metadata:
             labels:
-                app: car-distribution
+                app: drone-distribution
         spec:
             containers:
-              - name: car-distribution
-                image: minninnewah/car_distribution:latest
+              - name: drone-distribution
+                image: minninnewah/drone_distribution:latest
                 imagePullPolicy: Always
                 args:
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: car-distribution
+  name: drone-distribution
 spec:
   selector:
-    app: car-distribution
+    app: drone-distribution
   ports:
     - protocol: TCP
       port: 5000
