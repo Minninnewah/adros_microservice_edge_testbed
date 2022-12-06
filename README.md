@@ -1,15 +1,15 @@
-# Auto car speed microservice testbed in edge computing environment
+# Auto drone speed microservice testbed in edge computing environment
 
-This repository contains the different services for simulating a simple car speed controlling scenario with some front end analysis. Thereby this application is kept pretty simple and only created to have a testbed of different microservices. An important aspect is thereby the the edge computing part. As it is quite normal in an MEC (Multi-access edge computing) this application is split accordingly to the expectations in the response time.
+This repository contains the different services for simulating a simple drone speed controlling scenario with some front end analysis. Thereby this application is kept pretty simple and only created to have a testbed of different microservices. An important aspect is thereby the the edge computing part. As it is quite normal in an MEC (Multi-access edge computing) this application is split accordingly to the expectations in the response time.
 
 ## Edge services
-On the edge nodes of the testbed we have the services that requires a low latency to be able to controll the car in real-time. 
+On the edge nodes of the testbed we have the services that requires a low latency to be able to controll the drones in real-time. 
 
 ##Cloud nodes
 On the other side in the cloud nodes we have a big database to be able to do some analysis that doesen't need this low latency.
 
 ## Kubernetes environment
-To run this application we need at least two clusters, the cloud cluster and one edge cluster. In a more extended scenario you can have multiple edge nodes to move the services or data for MTD, simulating system error or tho follow the cars.
+To run this application we need at least two clusters, the cloud cluster and one edge cluster. In a more extended scenario you can have multiple edge nodes to move the services or data for MTD, simulating system error or tho follow the drones.
 
 ## Communication between clusters
 In this environment the communication between the cloud and the edge clusters are done using the TopoFuzzer tool. This is not necessary for each scenario but support the migration of services between different edge clusters sinc we can easily redirect traffic while keeping the connection.
@@ -40,7 +40,7 @@ wget -O - https://raw.githubusercontent.com/Minninnewah/aucas_microservice_edge_
 
 ## Services
 ### Edge cluster
-#### <ins>cars_management (identity handler)</ins>
+#### <ins>challenge-handler)</ins>
 ##### Description
 The role of this service is the creation and verifycation of json web tokens. This tokens are used to send the data between the edge node and the drone. This approach should increase the security since we can check that the request is comming from the drone. But in this test environment a simple key is used which addtionally is transmited at the register request and therefore this should be changed if someone really want to use this as a security feature. For our use this service just provide a statefull service (based on stateful code) which is important to provide all types of services.
 ##### API
@@ -62,9 +62,9 @@ This service has the task of handling the stored data on the edge. It provides a
 ##### Description
 ##### API
 - GET /:number
-- PUT                     //All car information in body
+- PUT                       //All drone information in body
 - DELETE /:number
-- GET /nextCar/:position  //Get the information of the car before
+- GET /nextDrone/:position  //Get the information of the drone before
 
 #### <ins>edge-db</ins>
 ##### Description
@@ -75,9 +75,9 @@ A simple postgres db instance.
 ##### Description
 The role of this service is to provide an API to the db.
 ##### API
-- GET /     //get all data
-- GET /cars //get the newest car information
-- POST /    //add new car information
+- GET /       //get all data
+- GET /drones //get the newest drone information
+- POST /      //add new drone information
 
 #### <ins>cloud-db</ins>
 ##### Description
@@ -85,13 +85,13 @@ A simple postgres db instance.
 
 #### <ins>speed-analysis</ins>
 ##### Description
-This service request the newest car information from the cloud-db-handler nad reacte a list with the different speeds on the controlled route.
+This service request the newest drone information from the cloud-db-handler nad reacte a list with the different speeds on the controlled route.
 ##### API
 - GET /  
 
-#### <ins>car-distribution</ins>
+#### <ins>drone-distribution</ins>
 ##### Description
-This service request the newest car information from the cloud-db-handler nad reacte a list with the locationsof the cars on the controlled route.
+This service request the newest drone information from the cloud-db-handler nad reacte a list with the locationsof the drones on the controlled route.
 ##### API
 - GET /
 
@@ -101,12 +101,12 @@ This service provides the react frontend application to the user.
 ##### API
 - GET /   //returns a webpage
 
-#### <ins>react-backend</ins>
+#### <ins>react-backbone</ins>
 ##### Description
 Since the front-end service only provides the website and the requests are done on the clients device we are not in the cluster anymore and as a result don't have access to services to request data to show. Therefore we have this backend service that is only a gateway to reqest data from outside the cluster.
 ##### API
 - GET /speed-analysis
-- GET / car-distribution
+- GET / drones-distribution
 
 ### <ins>Simulation service</ins>
 To generate some data in the microservices we also have a drone service that simulate a drone and repeatedly sends it's own information and request the optimal speed. Also the registration as well as the deregistration by entering or leaving the controlled route is done. After the drone left the controlled route it's information are automatically altered to create a new drone that enters the controlled route.
