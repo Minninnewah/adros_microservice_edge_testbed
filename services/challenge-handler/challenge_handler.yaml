@@ -1,32 +1,32 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-    name: drones-management
+    name: challenge-handler
     labels:
-        app: drones-management
+        app: challenge-handler
 spec:
     replicas: 1
     selector:
         matchLabels:
-            app: drones-management
+            app: challenge-handler
     template:
         metadata:
             labels:
-                app: drones-management
+                app: challenge-handler
         spec:
             containers:
-              - name: drones-management
-                image: minninnewah/drones_management:latest
+              - name: challenge-handler
+                image: minninnewah/challenge_handler:latest
                 imagePullPolicy: Always
                 args:
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: drones-management
+  name: challenge-handler
 spec:
   selector:
-    app: drones-management
+    app: challenge-handler
   ports:
     - protocol: TCP
       port: 5000

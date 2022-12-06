@@ -8,7 +8,7 @@ app.use(express.urlencoded({ extended: true }));
 
 
 const edge_db_handler = "http://edge-db-handler:5000/"
-const drones_management = "http://drones-management:5000/"
+const challenge_handler = "http://challenge-handler:5000/"
 const speedIncrease = 1;
 const speedSlowDecrease = 1;
 const speedFastDecrease = 2;
@@ -35,7 +35,7 @@ app.post('/', async (req, res) => {
   const jwt = req.body.jwt;
   console.log(jwt);
 
-  const data = await got.post(drones_management + 'decodeJWT/' + number, {
+  const data = await got.post(challenge_handler + 'decodeJWT/' + number, {
     json: {
       jwt: jwt
     }
@@ -91,7 +91,7 @@ app.post('/', async (req, res) => {
   console.log(speed)
   //let speed2 = speed;
 
-  const responseJwt = await got.post(drones_management + 'createJWT/' + number, {
+  const responseJwt = await got.post(challenge_handler + 'createJWT/' + number, {
     json: {
       speed: speed
     }

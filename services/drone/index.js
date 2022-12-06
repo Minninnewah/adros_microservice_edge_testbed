@@ -8,7 +8,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 const NUMBER_LENGTH = 7;
-const DEFAULT_SPEED = 120;
+const DEFAULT_SPEED = 50;
 
 const PORT = 8080;
 const HOST = '0.0.0.0';
@@ -33,7 +33,7 @@ let speed = DEFAULT_SPEED;
 let position = 0;
 let distance = 0;
 let number = randomNumber();
-let key = number //"test" //ToDo change to random
+let key = number // number as key is very weak!!!
 
 
 app.listen(PORT, HOST, () => {
@@ -94,9 +94,11 @@ const controlLoop = async () => {
       console.log("New speed is set")
       speed = newSpeed;
     }
-    //console.log(speed);
-    //Add some position and speed management stuff
-    position += 100;
+    //Simulate position based on speed (In real it would come from a sensor)
+    // 3km with 50km/h -> 3.6 minutes = 216s
+    // 3000m / 216s = 13.88m/s = 13.88m/loop
+    let distancePerLoop = 3000 / (3000 / speed * 3600)
+    position += distancePerLoop;
     console.log(position);
     if(position >= 3000) {
       inControlledSection = false;
@@ -104,12 +106,16 @@ const controlLoop = async () => {
     }
   }
   else {
-    //ToDo create new drone nr etc and start from the beginning
+    //Create new drone nr etc and start from the beginning of the route
+    position = 0;
+    distance = 0;
+    let number = randomNumber();
+    key = number // number as key is very weak!!!
     register();
   }
 }
 
 await register();
-setInterval(controlLoop, 1000) //every 100ms 1 drone -> Not for production
+setInterval(controlLoop, 1000) //every 1000ms 1 drone -> Not for production
 
 

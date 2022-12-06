@@ -27,8 +27,8 @@ docker build ./drone -t minninnewah/drone
 docker push minninnewah/drone:latest
 
 ## drones_managmenet
-docker build .drones_management -t minninnewah/drones_management
-docker push minninnewah/drones_management:latest
+docker build .challenge_handler -t minninnewah/challenge_handler
+docker push minninnewah/challenge_handler:latest
 
 ## edge-db-handler
 docker build ./edge_db_handler -t minninnewah/edge_db_handler

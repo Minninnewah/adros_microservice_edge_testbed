@@ -11,8 +11,8 @@ wget -O - https://raw.githubusercontent.com/Minninnewah/aucas_microservice_edge_
 kubectl apply -f front_end.yaml
 
 # react_backend
-wget -O - https://raw.githubusercontent.com/Minninnewah/aucas_microservice_edge_testbed/main/services/front_end/server/react_backbone.yaml > react_backend.yaml
-kubectl apply -f react_backend.yaml
+wget -O - https://raw.githubusercontent.com/Minninnewah/aucas_microservice_edge_testbed/main/services/front_end/server/react_backbone.yaml > react_backbone.yaml
+kubectl apply -f react_backbone.yaml
 
 # speed_analysis
 wget -O - https://raw.githubusercontent.com/Minninnewah/aucas_microservice_edge_testbed/main/services/speed_analysis/speed_analysis.yaml > speed_analysis.yaml
