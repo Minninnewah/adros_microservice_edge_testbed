@@ -42,7 +42,7 @@ wget -O - https://raw.githubusercontent.com/Minninnewah/aucas_microservice_edge_
 ### Edge cluster
 #### <ins>challenge-handler)</ins>
 ##### Description
-The role of this service is the creation and verifycation of json web tokens. This tokens are used to send the data between the edge node and the drone. This approach should increase the security since we can check that the request is comming from the drone. But in this test environment a simple key is used which addtionally is transmited at the register request and therefore this should be changed if someone really want to use this as a security feature. For our use this service just provide a statefull service (based on stateful code) which is important to provide all types of services.
+The role of this service is the creation and verification of JSON Web Tokens (JWT). These tokens are used to send the data between the edge node and the drone. This approach should increase security since we can check that the request is coming from the drone. But in this test environment, a simple key is used which additionally is transmitted at the registration request therefore this should be changed if someone really wants to use this as a security feature. For our use, this service just provides a stateful service (based on stateful code) which is important to provide all types of services.
 ##### API
 - POST /register/:DroneId     //and the key parameter in the body
 - DELETE /deregister/:DroneId
@@ -53,60 +53,61 @@ The role of this service is the creation and verifycation of json web tokens. Th
 
 #### <ins>Speed controller</ins>
 ##### Description
-To get the best speed considering the other drones in the near environment a dron can use this service. To get a speed proposal the drone needs to send their sensor values in JWT to the speed service. The speed service then request required information about other drones from the edge-db-handler service. After calculating the new speed for the drone, the information of the dron are also stored using the edge-db-server.
+To get the best speed considering the other drones in the near environment a drone can use this service. To get a speed proposal the drone needs to send its sensor values in JWT to the speed control service. The service then request required information about other drones from the edge-db-handler service. After calculating the new speed for the drone, the information of the drone is also stored using the edge-db-server.
 ##### API
+- POST /  //jwt in body
 
 
 #### <ins>edge-db-handler</ins>
-This service has the task of handling the stored data on the edge. It provides access to some data from the local db and send new data back to the cloud cluster.
 ##### Description
+This service has the task of handling the stored data on the edge. It provides access to some data from the local DB and sends new data back to the cloud cluster.
 ##### API
 - GET /:number
-- PUT                       //All drone information in body
+- PUT /                      //All drone information in body
 - DELETE /:number
 - GET /nextDrone/:position  //Get the information of the drone before
 
 #### <ins>edge-db</ins>
 ##### Description
-A simple postgres db instance.
+The role of this service is to provide a DB. For this application, a Postgres DB is used that can be accessed using name: admin, user: admin and password: admin again. Since this is a testbed the focus was not on the security of DB access.
 
 ### Cloud cluster
 #### <ins>cloud-db-handler</ins>
 ##### Description
-The role of this service is to provide an API to the db.
+This service has the task of handling the stored data on the cloud.
 ##### API
 - GET /       //get all data
-- GET /drones //get the newest drone information
+- GET /drones //get the newest data of each drone within the last 15 seconds
 - POST /      //add new drone information
 
 #### <ins>cloud-db</ins>
 ##### Description
-A simple postgres db instance.
+The role of this service is to provide a DB. For this application, a Postgres DB is used that can be accessed using name: admin, user: admin and password: admin again. Since this is a testbed the focus was not on the security of DB access.
 
 #### <ins>speed-analysis</ins>
 ##### Description
-This service request the newest drone information from the cloud-db-handler nad reacte a list with the different speeds on the controlled route.
+This service requests the newest drone information from the cloud-db-handler and creates a list with the different speeds on the controlled route.
 ##### API
 - GET /  
 
 #### <ins>drone-distribution</ins>
 ##### Description
-This service request the newest drone information from the cloud-db-handler nad reacte a list with the locationsof the drones on the controlled route.
+This service requests the newest drone information from the cloud-db-handler and creates a list with the locations of the drones on the controlled route.
 ##### API
 - GET /
 
 #### <ins>front-end</ins>
 ##### Description
-This service provides the react frontend application to the user.
+This service provides the react frontend application to the user. In this front end, the user has two graphics. The first one shows the current speed on the different parts of the route. If there are no drones on some parts of the route then this results in showing the maximum speed since a drone would be able to fly at full speed in this section. The second diagram shows the current distribution of the drones on the route. Thereby each drone is marked with a small circle. Since the focus of this testbed is not the production environment we limited the refresh to a manual refresh of the page from the user.
 ##### API
 - GET /   //returns a webpage
 
 #### <ins>react-backbone</ins>
 ##### Description
-Since the front-end service only provides the website and the requests are done on the clients device we are not in the cluster anymore and as a result don't have access to services to request data to show. Therefore we have this backend service that is only a gateway to reqest data from outside the cluster.
+Since the front-end service only provides the website and the requests are done on the clients' devices we are not in the cluster anymore and as a result, don't have access to services to request data to show. Therefore we have this backbone service that is only a gateway to request data from outside the cluster.
 ##### API
 - GET /speed-analysis
-- GET / drones-distribution
+- GET /drones-distribution
 
 ### <ins>Simulation service</ins>
-To generate some data in the microservices we also have a drone service that simulate a drone and repeatedly sends it's own information and request the optimal speed. Also the registration as well as the deregistration by entering or leaving the controlled route is done. After the drone left the controlled route it's information are automatically altered to create a new drone that enters the controlled route.
+To generate some data in the microservices we also have a drone service that simulates a drone and repeatedly sends its own information and requests the optimal speed. Also, the registration as well as the deregistration by entering or leaving the controlled route is done. After the drone left the controlled route its information is automatically altered to create a new drone that enters the controlled route.
