@@ -82,7 +82,7 @@ The role of this service is to provide a DB. For this application, a Postgres DB
 This service has the task of handling the stored data on the cloud.
 ##### API
 - GET /       //get all data
-- GET /drones //get the newest data of each drone within the last 15 seconds
+- GET /drones //get the newest data of each drone within the last 15 seconds ```curl cloud-db-hanlder:5000/drones```
 - POST /      //add new drone information
 
 #### <ins>cloud-db</ins>
