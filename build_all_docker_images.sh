@@ -26,8 +26,8 @@ docker push minninnewah/speed_analysis:latest
 docker build ./services/drone -t minninnewah/drone
 docker push minninnewah/drone:latest
 
-## drones_managmenet
-docker build ./services/challenge_handler -t minninnewah/challenge_handler
+## challenge_handler
+docker build ./services/challenge-handler -t minninnewah/challenge_handler
 docker push minninnewah/challenge_handler:latest
 
 ## edge-db-handler
