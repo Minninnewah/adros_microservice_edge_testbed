@@ -116,3 +116,13 @@ Since the front-end service only provides the website and the requests are done 
 
 ### <ins>Simulation service</ins>
 To generate some data in the microservices we also have a drone service that simulates a drone and repeatedly sends its own information and requests the optimal speed. Also, the registration as well as the deregistration by entering or leaving the controlled route is done. After the drone left the controlled route its information is automatically altered to create a new drone that enters the controlled route.
+
+For deploying on a K8s cluster:
+```
+docker build ./services/drone -t minninnewah/drone
+docker push minninnewah/drone:latest
+```
+```
+wget -O - https://raw.githubusercontent.com/Minninnewah/aucas_microservice_edge_testbed/main/services/drone/drone.yaml > drone.yaml
+kubectl apply -f drone.yaml
+```
