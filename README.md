@@ -37,6 +37,11 @@ Edge services
 wget -O - https://raw.githubusercontent.com/Minninnewah/aucas_microservice_edge_testbed/main/edge_node_clean_deployment.sh | bash
 
 ```
+### Build Docker images
+Build all docker images and upload them to the DockerHub (Docker desktop has to be running and logged in)
+```
+wget -O - https://raw.githubusercontent.com/Minninnewah/aucas_microservice_edge_testbed/main/build_all_docker_images.sh | bash
+```
 
 ## Services
 ### Edge cluster
