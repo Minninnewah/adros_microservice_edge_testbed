@@ -12,5 +12,5 @@ wget -O - https://raw.githubusercontent.com/Minninnewah/aucas_microservice_edge_
 kubectl apply -f speed_controller.yaml
 
 # challenge_handler
-wget -O - https://raw.githubusercontent.com/Minninnewah/aucas_microservice_edge_testbed/main/services/drones_managment/challenge_handler.yaml > challenge_handler.yaml
+wget -O - https://raw.githubusercontent.com/Minninnewah/aucas_microservice_edge_testbed/main/services/challenge-handler/challenge_handler.yaml > challenge_handler.yaml
 kubectl apply -f challenge_handler.yaml
