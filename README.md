@@ -1,4 +1,4 @@
-# Auto drone speed microservice testbed in edge computing environment
+# Auto drone speed microservice testbed in edge computing environment (adros)
 
 This repository contains the different services for simulating a simple drone speed controlling scenario with some front end analysis. Thereby this application is kept pretty simple and only created to have a testbed of different microservices. An important aspect is thereby the the edge computing part. As it is quite normal in an MEC (Multi-access edge computing) this application is split accordingly to the expectations in the response time.
 
