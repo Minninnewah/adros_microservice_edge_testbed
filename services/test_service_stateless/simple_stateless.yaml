@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+    name: simple-stateless
+    labels:
+        app: simple-stateless
+spec:
+    replicas: 1
+    selector:
+        matchLabels:
+            app: simple-stateless
+    template:
+        metadata:
+            labels:
+                app: simple-stateless
+        spec:
+            containers:
+              - name: simple-stateless
+                image: minninnewah/simple_stateless:latest
+                imagePullPolicy: Always
+                args:
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: simple-stateless
+spec:
+  type: NodePort
+  selector:
+    app: simple-stateless
+  ports:
+    - protocol: TCP
+      port: 5000
+      targetPort: 8080
+      nodePort: 30004

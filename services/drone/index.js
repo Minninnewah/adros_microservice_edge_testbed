@@ -13,7 +13,7 @@ const DEFAULT_SPEED = 50;
 const PORT = 8080;
 const HOST = '0.0.0.0';
 
-const dronesManagementService = "http://drones-management:5000/"
+const dronesManagementService = "http://challenge-handler:5000/"
 const speedControllerService = "http://speed-controller:5000/"
 
 
@@ -93,11 +93,12 @@ const controlLoop = async () => {
     if (!isNaN(newSpeed)) {
       console.log("New speed is set")
       speed = newSpeed;
+      
     }
     //Simulate position based on speed (In real it would come from a sensor)
     // 3km with 50km/h -> 3.6 minutes = 216s
     // 3000m / 216s = 13.88m/s = 13.88m/loop
-    let distancePerLoop = 3000 / (3000 / speed * 3600)
+    let distancePerLoop = speed/3.6 //Because loop every 1 sec
     position += distancePerLoop;
     console.log(position);
     if(position >= 3000) {

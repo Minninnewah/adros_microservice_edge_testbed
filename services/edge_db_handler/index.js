@@ -72,9 +72,22 @@ const insertDroneQuery = `INSERT INTO drones (timestamp, number, speed, distance
   WHERE NOT EXISTS (SELECT number FROM drones WHERE number=$6);`
 
 async function init_db() {
-  await pool.query(`DROP TABLE IF EXISTS drones;`)
-  await pool.query(createTable);
-  await pool.query(insertSampleData, [now, now]);
+  let db_available = false;
+  while (db_available == false){
+    try {
+      console.log("test1")
+      await pool.query(`DROP TABLE IF EXISTS drones;`)
+      console.log("test2")
+      await pool.query(createTable);
+      console.log("test3")
+      await pool.query(insertSampleData, [now, now]);
+      console.log("test4")
+      db_available = true;
+    } catch (err) {
+      console.log("DB not yet available")
+      console.log(err)
+    }
+  }
 }
 
 function uploadDataToCloudCluster (timestamp, number, speed, distance, position) {
@@ -153,7 +166,7 @@ function delete_drone (req, res) {
     })
 }
 
-init_db();
+await init_db();
 
 app.get('/:number',get_drone);
 app.put('/', update_drone);

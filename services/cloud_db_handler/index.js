@@ -61,9 +61,23 @@ const insertDroneQuery = `INSERT INTO drones (timestamp, number, speed, distance
   );`
 
 async function init_db() {
-  await pool.query(`DROP TABLE IF EXISTS drones;`)
-  await pool.query(createTable);
-  await pool.query(insertSampleData, [now, now]);
+  let db_available = false;
+  while (db_available == false){
+    try {
+      console.log("test1")
+      await pool.query(`DROP TABLE IF EXISTS drones;`)
+      console.log("test2")
+      await pool.query(createTable);
+      console.log("test3")
+      await pool.query(insertSampleData, [now, now]);
+      console.log("test4")
+      db_available = true;
+    } catch (err) {
+      console.log("DB not yet available")
+      console.log(err)
+    }
+  }
+  console.log("Init done 2")
 }
 
 function add_drone_data(req, res) {
@@ -77,7 +91,7 @@ function add_drone_data(req, res) {
 
 
 async function get_Data_to_time(req, res) {
-  const timestamp = now;
+  const timestamp = new Date(); //now;
   const sqlCommand = `SELECT *
     FROM    drones 
     WHERE   timestamp BETWEEN $1::timestamp - (INTERVAL '15 second') AND $2::timestamp;`
@@ -93,6 +107,7 @@ async function get_Data_to_time(req, res) {
 
 
 init_db();
+console.log("Init done")
 
 app.get('/', (req, res) => {
     //res.send('Hello World');

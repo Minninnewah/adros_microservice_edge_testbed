@@ -52,7 +52,7 @@ app.post('/', async (req, res) => {
   if(droneBefore.length == 0) {
     speed = increaseSpeed(speed);
   }
-  else if(data.position < droneBefore.position + 100)
+  else if(data.position > droneBefore.position - 100)
     if(data.distance > 60){
       //Slow changes toward the speed of the drone before
       if (speed < droneBefore.speed) {
