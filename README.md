@@ -1,4 +1,4 @@
-# Auto drone speed microservice testbed in edge computing environment
+# Auto drone speed microservice testbed in edge computing environment (adros)
 
 This repository contains the different services for simulating a simple drone speed controlling scenario with some front end analysis. Thereby this application is kept pretty simple and only created to have a testbed of different microservices. An important aspect is thereby the the edge computing part. As it is quite normal in an MEC (Multi-access edge computing) this application is split accordingly to the expectations in the response time.
 
@@ -82,7 +82,7 @@ The role of this service is to provide a DB. For this application, a Postgres DB
 This service has the task of handling the stored data on the cloud.
 ##### API
 - GET /       //get all data
-- GET /drones //get the newest data of each drone within the last 15 seconds
+- GET /drones //get the newest data of each drone within the last 15 seconds ```curl cloud-db-hanlder:5000/drones```
 - POST /      //add new drone information
 
 #### <ins>cloud-db</ins>
@@ -116,3 +116,13 @@ Since the front-end service only provides the website and the requests are done 
 
 ### <ins>Simulation service</ins>
 To generate some data in the microservices we also have a drone service that simulates a drone and repeatedly sends its own information and requests the optimal speed. Also, the registration as well as the deregistration by entering or leaving the controlled route is done. After the drone left the controlled route its information is automatically altered to create a new drone that enters the controlled route.
+
+For deploying on a K8s cluster:
+```
+docker build ./services/drone -t minninnewah/drone
+docker push minninnewah/drone:latest
+```
+```
+wget -O - https://raw.githubusercontent.com/Minninnewah/aucas_microservice_edge_testbed/main/services/drone/drone.yaml > drone.yaml
+kubectl apply -f drone.yaml
+```
