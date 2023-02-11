@@ -1,24 +1,18 @@
-apiVersion: apps/v1
-kind: Deployment
+apiVersion: v1
+kind: Pod
 metadata:
-    name: simple-stateful
-    labels:
-        app: simple-stateful
+  name: simple-stateful
+  labels:
+    app: simple-stateful
 spec:
-    replicas: 1
-    selector:
-        matchLabels:
-            app: simple-stateful
-    template:
-        metadata:
-            labels:
-                app: simple-stateful
-        spec:
-            containers:
-              - name: simple-stateful
-                image: minninnewah/simple_stateful:latest
-                imagePullPolicy: Always
-                args:
+  containers:
+  - name: simple-stateful
+    image: minninnewah/simple_stateful:latest
+    ports:
+    - containerPort: 8080
+      protocol: TCP
+  nodeSelector:
+    kubernetes.io/hostname: worker-1
 ---
 apiVersion: v1
 kind: Service

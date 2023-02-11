@@ -12,12 +12,12 @@ spec:
   accessModes:
     - ReadWriteMany
   hostPath:
-    path: /data/nginx-pv
+    path: /data/nginx-2-pv
 ---
 apiVersion: v1
 kind: PersistentVolume
 metadata:
-  name: nginx-2-pv
+  name: nginx-3-pv
   labels:
     type: local
 spec:
@@ -27,7 +27,7 @@ spec:
   accessModes:
     - ReadWriteMany
   hostPath:
-    path: /data/nginx-2-pv
+    path: /data/nginx-3-pv
 ---
 apiVersion: v1
 kind: Service
@@ -50,13 +50,13 @@ spec:
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
-  name: simple-stateful-set_2
+  name: simple-stateful-set2
 spec:
-  replicas: 1  # the default is 1
+  replicas: 2  # the default is 1
   selector:
     matchLabels:
       app: nginx2  # has to match .spec.template.metadata.labels
-  #serviceName: "nginx"
+  serviceName: "nginx"
   template:
     metadata:
       labels:

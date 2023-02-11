@@ -56,7 +56,7 @@ spec:
   selector:
     matchLabels:
       app: nginx  # has to match .spec.template.metadata.labels
-  #serviceName: "nginx"
+  serviceName: "nginx"
   template:
     metadata:
       labels:
