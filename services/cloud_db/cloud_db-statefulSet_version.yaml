@@ -1,0 +1,105 @@
+apiVersion: v1
+kind: Secret
+metadata:
+  name: postgres-credentials
+type: Opaque
+data:
+  user: YWRtaW4=
+  password: YWRtaW4=
+  database: YWRtaW4=
+---
+#apiVersion: v1
+#kind: PersistentVolumeClaim
+#metadata:
+#  name: postgres-pvc-cloud
+#  labels:
+#    type: local
+#spec:
+#  storageClassName: standard
+#  accessModes:
+#    - ReadWriteMany
+#  resources:
+#    requests:
+#      storage: 500Mi
+#  volumeName: postgres-pv-cloud
+#---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: postgres-pv-cloud
+  labels:
+    type: local
+spec:
+  capacity:
+    storage: 500Mi
+  storageClassName: standard
+  accessModes:
+    - ReadWriteMany
+  hostPath:
+    path: /data/postgres-pv-local
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: cloud-db
+spec:
+  serviceName: "postgres"
+  replicas: 3
+  selector:
+    matchLabels:
+      name: cloud-db
+  template:
+    metadata:
+      labels:
+        name: cloud-db
+        tier: backend
+    spec:
+      containers:
+        - name: cloud-db
+          image: mdillon/postgis:10
+          ports:
+            - containerPort: 5432
+          env:
+            - name: POSTGRES_USER
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-credentials
+                  key: user
+
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-credentials
+                  key: password
+
+            - name: POSTGRES_DB
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-credentials
+                  key: database
+
+          volumeMounts:
+            - name: postgres-volume-mount
+              mountPath: /var/lib/postgresql/data
+  volumeClaimTemplates:
+    - metadata:
+        name: postgres-volume-mount
+      spec:
+        storageClassName: standard
+        accessModes: [ "ReadWriteMany" ]
+        resources:
+          requests:
+            storage: 500Mi
+#---
+#apiVersion: v1
+#kind: Service
+#metadata:
+#  name: cloud-db
+#spec:
+#  selector:
+#    name: cloud-db
+#  ports:
+#    - protocol: TCP
+#      port: 5432
+#      targetPort: 5432
+
